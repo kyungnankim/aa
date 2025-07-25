@@ -1,13 +1,8 @@
 import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Plus, User, ChevronDown } from "lucide-react";
 
-const Header = ({
-  user,
-  onLogout,
-  onCreateBattle,
-  currentPage,
-  onNavigate,
-}) => {
+const Header = ({ user, onLogout, onCreateBattle }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState({
     about: false,
@@ -15,7 +10,10 @@ const Header = ({
     entertainment: false,
   });
 
-  const isActive = (path) => currentPage === path;
+  const location = useLocation();
+  const currentPage = location.pathname;
+
+  const isActive = (path) => currentPage.startsWith(path);
 
   const menuItems = [
     {
@@ -58,11 +56,11 @@ const Header = ({
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <button onClick={() => onNavigate("/")} className="flex items-center">
+          <Link to="/" className="flex items-center">
             <h1 className="text-2xl font-bold">
               <span className="text-pink-500">Battle</span> Seoul
             </h1>
-          </button>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
@@ -109,13 +107,19 @@ const Header = ({
                     className="absolute top-full left-0 bg-gray-900 border border-gray-800 rounded-lg shadow-xl py-2 min-w-[200px]"
                   >
                     {item.subItems.map((subItem) => (
-                      <button
+                      <Link
                         key={subItem.path}
-                        onClick={() => onNavigate(subItem.path)}
-                        className="block w-full text-left px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
+                        to={subItem.path}
+                        className="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
+                        onClick={() =>
+                          setDropdownOpen({
+                            ...dropdownOpen,
+                            [item.dropdownKey]: false,
+                          })
+                        }
                       >
                         {subItem.label}
-                      </button>
+                      </Link>
                     ))}
                   </div>
                 )}
@@ -148,12 +152,12 @@ const Header = ({
 
               {/* User Dropdown */}
               <div className="absolute right-0 top-full mt-2 bg-gray-900 border border-gray-800 rounded-lg shadow-xl py-2 min-w-[150px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                <button
-                  onClick={() => onNavigate("/mypage")}
-                  className="block w-full text-left px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
+                <Link
+                  to="/mypage"
+                  className="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
                 >
                   마이페이지
-                </button>
+                </Link>
                 <button
                   onClick={onLogout}
                   className="w-full text-left px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
@@ -184,25 +188,24 @@ const Header = ({
           <div className="px-4 py-4 space-y-2">
             {menuItems.map((item) => (
               <div key={item.label}>
-                <button
-                  onClick={() => onNavigate(item.path)}
-                  className="block w-full text-left py-2 text-gray-300 hover:text-pink-400 transition-colors"
+                <Link
+                  to={item.path}
+                  className="block py-2 text-gray-300 hover:text-pink-400 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.label}
-                </button>
+                </Link>
                 {item.subItems && (
                   <div className="ml-4 space-y-1">
                     {item.subItems.map((subItem) => (
-                      <button
+                      <Link
                         key={subItem.path}
-                        onClick={() => {
-                          onNavigate(subItem.path);
-                          setMobileMenuOpen(false);
-                        }}
-                        className="block w-full text-left py-1 text-sm text-gray-400 hover:text-pink-400 transition-colors"
+                        to={subItem.path}
+                        className="block py-1 text-sm text-gray-400 hover:text-pink-400 transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
                       >
                         {subItem.label}
-                      </button>
+                      </Link>
                     ))}
                   </div>
                 )}

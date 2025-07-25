@@ -122,17 +122,7 @@ const BattleList = ({ onBattleClick }) => {
             음식, 패션, 음악까지 VS. 포맷으로 만나는 서울의 라이프스타일
           </p>
         </div>
-        <iframe
-          width="560"
-          height="315"
-          src="https://www.youtube.com/embed/k9OuL2WhKVs?si=BgzM1aX-wC456Wfy"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-        ></iframe>
-        {/* 필터 & 정렬 */}
+
         <div className="flex flex-wrap gap-4 mb-8">
           <div className="flex gap-2">
             {["all", "music", "fashion", "food"].map((cat) => (

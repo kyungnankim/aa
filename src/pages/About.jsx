@@ -23,9 +23,14 @@ const Mayor = () => (
     <div className="bg-gray-800/50 rounded-2xl p-8">
       <div className="flex items-center gap-6">
         <img
-          src="/mayor-image.jpg"
+          src="/images/default.jpg"
           alt="Mayor"
           className="w-48 h-48 rounded-lg object-cover"
+          onError={(e) => {
+            // 이미지 로드 실패시 대체 이미지 또는 placeholder
+            e.target.src = "/images/default.jpg";
+            e.target.onerror = null; // 무한 루프 방지
+          }}
         />
         <div>
           <h2 className="text-2xl font-bold mb-2">Mayor Name</h2>

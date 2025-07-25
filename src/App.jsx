@@ -14,6 +14,11 @@ import Header from "./components/Header";
 import BattleList from "./components/BattleList";
 import BattleDetail from "./components/BattleDetail";
 import ContentUpload from "./components/ContentUpload";
+import About from "./pages/About";
+import CultureMagazine from "./pages/CultureMagazine";
+import Entertainment from "./pages/Entertainment";
+import SocialLinks from "./components/SocialLinks";
+import ScrollToTop from "./components/ScrollToTop";
 
 const Apps = () => {
   const [user, setUser] = useState(null);
@@ -93,7 +98,7 @@ const Apps = () => {
 
   return (
     <Router>
-      <div className="min-h-screen bg-black">
+      <div className="min-h-screen bg-black relative">
         <Routes>
           {/* 메인 페이지 - Battle List */}
           <Route
@@ -180,7 +185,7 @@ const Apps = () => {
 
           {/* About 페이지들 */}
           <Route
-            path="/about"
+            path="/about/*"
             element={
               <>
                 {user && (
@@ -192,22 +197,14 @@ const Apps = () => {
                     onNavigate={handleNavigate}
                   />
                 )}
-                <div className="max-w-7xl mx-auto px-4 py-8">
-                  <h1 className="text-4xl font-bold text-white mb-4">
-                    About Battle Seoul
-                  </h1>
-                  <p className="text-gray-400">
-                    Battle Seoul은 트렌드 시뮬레이션을 통해 서울의 문화를
-                    만들어갑니다.
-                  </p>
-                </div>
+                <About />
               </>
             }
           />
 
           {/* Culture Magazine */}
           <Route
-            path="/magazine/hot"
+            path="/magazine/*"
             element={
               <>
                 {user && (
@@ -215,25 +212,18 @@ const Apps = () => {
                     user={user}
                     onLogout={handleLogout}
                     onCreateBattle={() => setShowUpload(true)}
-                    currentPage="/magazine/hot"
+                    currentPage="/magazine"
                     onNavigate={handleNavigate}
                   />
                 )}
-                <div className="max-w-7xl mx-auto px-4 py-8">
-                  <h1 className="text-4xl font-bold text-white mb-4">
-                    Hot Magazine
-                  </h1>
-                  <p className="text-gray-400">
-                    가장 핫한 배틀들을 확인하세요.
-                  </p>
-                </div>
+                <CultureMagazine />
               </>
             }
           />
 
           {/* Entertainment */}
           <Route
-            path="/entertainment/artist"
+            path="/entertainment/*"
             element={
               <>
                 {user && (
@@ -241,16 +231,11 @@ const Apps = () => {
                     user={user}
                     onLogout={handleLogout}
                     onCreateBattle={() => setShowUpload(true)}
-                    currentPage="/entertainment/artist"
+                    currentPage="/entertainment"
                     onNavigate={handleNavigate}
                   />
                 )}
-                <div className="max-w-7xl mx-auto px-4 py-8">
-                  <h1 className="text-4xl font-bold text-white mb-4">Artist</h1>
-                  <p className="text-gray-400">
-                    Battle Seoul의 아티스트들을 만나보세요.
-                  </p>
-                </div>
+                <Entertainment />
               </>
             }
           />
@@ -283,76 +268,15 @@ const Apps = () => {
             }
           />
         </Routes>
+
+        {/* 소셜 링크 컴포넌트 */}
+        <SocialLinks />
+
+        {/* 맨 위로 올리기 버튼 */}
+        <ScrollToTop />
       </div>
     </Router>
   );
 };
 
 export default Apps;
-/*
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Callback from "./components/Callback";
-const App = () => {
-  // Spotify 로그인 함수
-  const loginWithSpotify = async () => {
-    const CLIENT_ID = "254d6b7f190543e78da436cd3287a60e";
-    const REDIRECT_URI = "http://127.0.0.1:5173/callback"; // ✅ callback.jsx에서 code 처리
-
-    //const REDIRECT_URI = 'http://127.0.0.1:5173/register'; // 로그인 후 회원가입 페이지로 이동
-    const SCOPES = "user-read-private user-read-email";
-
-    const generateCodeVerifier = (length) => {
-      const possible =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      return Array.from({ length })
-        .map(() => possible.charAt(Math.floor(Math.random() * possible.length)))
-        .join("");
-    };
-
-    const generateCodeChallenge = async (verifier) => {
-      const data = new TextEncoder().encode(verifier);
-      const digest = await crypto.subtle.digest("SHA-256", data);
-      return btoa(String.fromCharCode(...new Uint8Array(digest)))
-        .replace(/\+/g, "-")
-        .replace(/\//g, "_")
-        .replace(/=+$/, "");
-    };
-
-    const verifier = generateCodeVerifier(128);
-    const challenge = await generateCodeChallenge(verifier);
-    sessionStorage.setItem("verifier", verifier);
-
-    const params = new URLSearchParams({
-      client_id: CLIENT_ID,
-      response_type: "code",
-      redirect_uri: REDIRECT_URI,
-      scope: SCOPES,
-      code_challenge_method: "S256",
-      code_challenge: challenge,
-    });
-
-    window.location.href = `https://accounts.spotify.com/authorize?${params.toString()}`;
-  };
-
-  return (
-    <Router>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black p-4">
-        <Routes>
-          <Route
-            path="/"
-            element={<Login onSpotifyLogin={loginWithSpotify} />}
-          />
-          <Route path="/register" element={<Register />} />
-          <Route path="/callback" element={<Callback />} />
-        </Routes>
-      </div>
-    </Router>
-  );
-};
-
-export default App;
-
-*/
